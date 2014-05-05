@@ -20,13 +20,20 @@ def getPortInformation(ipAddress):
             lport = nm[host][proto].keys()
             lport.sort()
             for port in lport:
-                dict = {}
-                dict['protocol'] = proto
-                dict['port'] = port
-                dict['state'] = nm[host][proto][port]['state']
-                dict['name'] = nm[host][proto][port]['name']
-                dictli.append(dict)
+                dicti = {}
+                dicti['protocol'] = proto
+                dicti['port'] = port
+                #print host, proto, port
+                #print nm[host][proto]
+                try:
+
+                    dicti['state'] = nm[host][proto][port].get('state','NA')
+                    dicti['name'] = nm[host][proto][port].get('name','NA')
+
+                    dictli.append(dicti)
+                except:
+                    print "NA"
     return json.dumps(dictli)
 
 if __name__ == '__main__':
-    getPortInformation("localhost")
+    print getPortInformation("localhost")
