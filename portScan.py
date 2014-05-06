@@ -20,7 +20,6 @@ def getPortInformation(ipAddress):
             lport.sort()
             for port in lport:
                 dicti = {}
-<<<<<<< HEAD
                 try:
                     dicti['protocol'] = proto
                     dicti['port'] = port
@@ -36,7 +35,7 @@ def getPortScan(ipAddress):
     dictli = {}
     if len(result)<=2:
         dictli["code"] = "Green"
-    elif len(result)<=4:
+    elif len(result)<=5:
         dictli["code"] = "Amber"
     else:
         dictli["code"] = "Red"
@@ -44,28 +43,10 @@ def getPortScan(ipAddress):
     for ele in result:
         if str(ele['state']).lower()=="open":
             s = s + "," + str(ele['port'])
-    dictli['openPorts'] = s
+    dictli['openPorts'] = s.strip(",")
     return dictli
 
 if __name__ == '__main__':
     ipAddress = sys.argv[0]
     print getPortInformation(ipAddress)
     print getPortScan(ipAddress)
-=======
-                dicti['protocol'] = proto
-                dicti['port'] = port
-                #print host, proto, port
-                #print nm[host][proto]
-                try:
-
-                    dicti['state'] = nm[host][proto][port].get('state','NA')
-                    dicti['name'] = nm[host][proto][port].get('name','NA')
-
-                    dictli.append(dicti)
-                except:
-                    print "NA"
-    return json.dumps(dictli)
-
-if __name__ == '__main__':
-    print getPortInformation("localhost")
->>>>>>> FETCH_HEAD

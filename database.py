@@ -34,7 +34,7 @@ def getDBScan(ip,uname,pword):
     li = s.strip(",").split(",")
     for name in names:
         li = [x for x in li if x != name]
-    dictli['hosts'] = li
+    dictli['hosts'] = list(set(li))
     if len(li)==0:
         dictli["code"] = "Green"
     elif len(li)<=3:
