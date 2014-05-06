@@ -8,8 +8,7 @@ Sudo access
 NMAP installed 
 @author: srini
 '''
-import nmap
-import json
+import nmap, sys
 
 def getPortInformation(ipAddress):
     nm = nmap.PortScanner()
@@ -20,13 +19,34 @@ def getPortInformation(ipAddress):
             lport = nm[host][proto].keys()
             lport.sort()
             for port in lport:
-                dict = {}
-                dict['protocol'] = proto
-                dict['port'] = port
-                dict['state'] = nm[host][proto][port]['state']
-                dict['name'] = nm[host][proto][port]['name']
-                dictli.append(dict)
-    return json.dumps(dictli)
+                dicti = {}
+                try:
+                    dicti['protocol'] = proto
+                    dicti['port'] = port
+                    dicti['state'] = nm[host][proto][port].get('state','NA')
+                    dicti['name'] = nm[host][proto][port].get('name','NA')
+                    dictli.append(dicti)
+                except:
+                    continue
+    return dictli
+
+def getPortScan(ipAddress):
+    result = getPortInformation(ipAddress)
+    dictli = {}
+    if len(result)<=2:
+        dictli["code"] = "Green"
+    elif len(result)<=4:
+        dictli["code"] = "Amber"
+    else:
+        dictli["code"] = "Red"
+    s = ""
+    for ele in result:
+        if str(ele['state']).lower()=="open":
+            s = s + "," + str(ele['port'])
+    dictli['openPorts'] = s
+    return dictli
 
 if __name__ == '__main__':
-    getPortInformation("localhost")
+    ipAddress = sys.argv[0]
+    print getPortInformation(ipAddress)
+    print getPortScan(ipAddress)
