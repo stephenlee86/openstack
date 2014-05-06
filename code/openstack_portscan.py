@@ -25,11 +25,10 @@ def nova_security_group_all_allowed_ports():
 
     for group in nova.security_groups.list():
         for rule in group.rules:
-            #print rule
             #{u'from_port': 22, u'group': {}, u'ip_protocol': u'tcp', u'to_port': 22, u'parent_group_id': 1, u'ip_range': {u'cidr': u'0.0.0.0/0'}, u'id': 1}
             if open_ports.has_key(group.id):
                 open_ports[group.id].append(rule['from_port'])
-                #print open_ports[group.id]
+                
             else:
                 open_ports[group.id] = [rule['from_port']]
     print open_ports
@@ -43,21 +42,16 @@ def all_allowed_ports_per_vm():
     for vm in nova.servers.list():
         print vm.name
         open_ports = {}
-     #   if open_ports_vm.has_key():
-        #print vm.security_groups[0]
         for sec in vm.security_groups:
             
             group = nova.security_groups.find(name=sec['name'])
             for rule in group.rules:
-            #print rule
             #{u'from_port': 22, u'group': {}, u'ip_protocol': u'tcp', u'to_port': 22, u'parent_group_id': 1, u'ip_range': {u'cidr': u'0.0.0.0/0'}, u'id': 1}
                 if open_ports.has_key(sec['name']):
                     open_ports[sec['name']].append(rule['from_port'])
-                #print open_ports[group.id]
                 else:
                     open_ports[sec['name']] = [rule['from_port']]
         open_ports_vm[vm.name] = [vm.networks.values(), open_ports]
-
 
     print open_ports_vm
 
