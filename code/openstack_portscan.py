@@ -40,7 +40,7 @@ def all_allowed_ports_per_vm():
 
     open_ports_vm={}
     for vm in nova.servers.list():
-        print vm.name
+        
         open_ports = {}
         for sec in vm.security_groups:
             
