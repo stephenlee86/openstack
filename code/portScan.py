@@ -47,6 +47,6 @@ def getPortScan(ipAddress):
     return dictli
 
 if __name__ == '__main__':
-    ipAddress = sys.argv[0]
+    ipAddress = sys.argv[1]
     print getPortInformation(ipAddress)
     print getPortScan(ipAddress)
