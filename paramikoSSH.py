@@ -17,18 +17,15 @@ def login(host, user, passw):
     stdin = channel.makefile('wb')
     stdout = channel.makefile('rb')
     stdin.write('''
-    rmdir %s
+    scp %s %s
     exit
-    ''' %("df"))
+    ''' %("currentLocationDirectory","remoteLocationDirectory"))
     result = stdout.read()
     stdout.close()
     stdin.close()
     ssh.close()
     return result
-"""
-sshpass -p 'Aman@1234' ssh srini@obelix61
-mysql -uroot -pa -e \"show databases;\"
-"""
+
 if __name__ == '__main__':
-    #execute_command("obelix.cs.umass.edu", "srini", "Aman@1234", "ls")
-    print login('obelix.cs.umass.edu','srini','Aman@1234')
+    execute_command("obelix.cs.umass.edu", "srxxx", "xxxxxxx", "ls -al")
+    print login('obelix.cs.umass.edu','srxxx','xxxxxxx')
