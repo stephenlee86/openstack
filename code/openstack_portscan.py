@@ -40,10 +40,10 @@ def all_allowed_ports_per_vm():
 
     open_ports_vm={}
     for vm in nova.servers.list():
-        
         open_ports = {}
+        count = 0
         for sec in vm.security_groups:
-            
+
             group = nova.security_groups.find(name=sec['name'])
             for rule in group.rules:
             #{u'from_port': 22, u'group': {}, u'ip_protocol': u'tcp', u'to_port': 22, u'parent_group_id': 1, u'ip_range': {u'cidr': u'0.0.0.0/0'}, u'id': 1}
@@ -51,14 +51,18 @@ def all_allowed_ports_per_vm():
                     open_ports[sec['name']].append(rule['from_port'])
                 else:
                     open_ports[sec['name']] = [rule['from_port']]
+                count += 1
         open_ports_vm[vm.name] = [vm.networks.values(), open_ports]
+        print "VM %s has %d ports open with the following ip address  "% (vm.name, count)
+        print open_ports_vm[vm.name]
+        print "==============================================================="
 
-    print open_ports_vm
 
     return open_ports_vm
 
 if __name__ == "__main__":
      #nova_security_group_all_allowed_ports() 
      all_allowed_ports_per_vm()
+
 
 
